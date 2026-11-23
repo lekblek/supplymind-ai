@@ -2,9 +2,47 @@ spring:
   application:
     name: supplymind-ai
 
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+  datasource:
+    hikari:
+      pool-name: SupplyMindHikariPool
+      maximum-pool-size: ${DB_POOL_MAX_SIZE:10}
+      minimum-idle: ${DB_POOL_MIN_IDLE:2}
+      schema: platform
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: false
+    clean-disabled: true
+    placeholders:
+      appRole: ${DB_APP_USER:kuamoja_app}
+      migratorRole: ${DB_MIGRATOR_USER:kuamoja_migrator}
+    schemas:
+      - flyway
+      - platform
+    default-schema: flyway
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: platform
+
+  web:
+    error:
+      include-stacktrace: never
+      include-message: never
+      include-binding-errors: never
+
 
 server:
   port: ${SERVER_PORT:8080}
+  shutdown: graceful
+  servlet:
+    context-path: /api/v1
 
 management:
   endpoints:
@@ -13,3 +51,16 @@ management:
         include:
           - health
           - info
+
+logging:
+  pattern:
+    correlation: "[%X{correlationId:-}] "
+
+springdoc:
+  writer-with-order-by-keys: true
+  writer-with-default-pretty-printer: true
+  override-with-generic-response: false
+  default-produces-media-type: application/json
+  swagger-ui:
+    display-operation-id: true
+    display-request-duration: true
