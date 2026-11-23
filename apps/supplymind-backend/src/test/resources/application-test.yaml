@@ -1,0 +1,12 @@
+spring:
+  flyway:
+    schemas:
+      - flyway
+      - platform
+      - inventory
+    default-schema: flyway
+    placeholders:
+      appRole: ${DB_APP_USER:supplymind_app}
+      migratorRole: ${DB_MIGRATOR_USER:supplymind_migrator}
+  jpa:
+    show-sql: false

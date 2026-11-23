@@ -153,7 +153,10 @@ backend-run profile='local':
 # Internal: only this child process receives database env variables.
 [private]
 _backend-run profile:
-  @SUPPLYMIND_ROOT="$(pwd -W 2>/dev/null || pwd -P)" bash -c 'cd apps/supplymind-backend && ./mvnw spring-boot:run "-Dspring-boot.run.profiles=$1"' _ "$1"
+  @root="$(pwd -W 2>/dev/null || pwd -P)"; \
+    secrets_dir="$root/infra/docker/secrets/postgres/"; \
+    test -d "$secrets_dir" || { echo "Missing PostgreSQL secrets directory: $secrets_dir" >&2; exit 1; }; \
+    SUPPLYMIND_ROOT="$root" SUPPLYMIND_SECRETS_DIR="$secrets_dir" bash -c 'cd apps/supplymind-backend && ./mvnw spring-boot:run "-Dspring-boot.run.profiles=$1"' _ "$1"
 
 # Start PostgreSQL, then Spring Boot on the host.
 [group('30 · Backend')]

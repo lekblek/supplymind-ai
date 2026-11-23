@@ -1,7 +1,7 @@
 spring:
   config:
     import:
-      - "configtree:${SUPPLYMIND_ROOT:./}/infra/docker/secrets/postgres/"
+      - "configtree:${SUPPLYMIND_SECRETS_DIR:/run/secrets/}"
 
   datasource:
     url: jdbc:postgresql://${DB_HOST:127.0.0.1}:${DB_PORT:5432}/${DB_NAME:supplymind_db}
@@ -14,16 +14,15 @@ spring:
     url: ${spring.datasource.url}
     user: ${DB_MIGRATOR_USER:supplymind_migrator}
     password: ${db_migrator_password.txt}
-    schemas:
-      - flyway
-      - platform
-    default-schema: flyway
+    placeholders:
+      appRole: ${DB_APP_USER:supplymind_app}
+      migratorRole: ${DB_MIGRATOR_USER:supplymind_migrator}
 
   jpa:
     show-sql: false
 
 server:
-  address: 127.0.0.1
+  address: ${SERVER_ADDRESS:127.0.0.1}
   port: ${SERVER_PORT:8080}
 
 logging:

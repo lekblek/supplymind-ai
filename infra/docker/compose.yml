@@ -1,6 +1,7 @@
 services:
   postgres-app:
     image: postgres:19.0
+    container_name: supply-mind-db
 
     stop_grace_period: 30s
     shm_size: 256mb
@@ -29,7 +30,7 @@ services:
       - ./postgres/initdb:/docker-entrypoint-initdb.d:ro
 
     networks:
-      - supplymind-network
+      - app-network
 
     healthcheck:
       test: [
@@ -41,11 +42,48 @@ services:
       retries: 12
       start_period: 20s
 
+
+  backend:
+    build:
+      context: ../../apps/supplymind-backend
+      dockerfile: Dockerfile
+    container_name: supply-mind-api
+
+    image: supplymind-ai/backend:local
+
+    restart: unless-stopped
+
+    depends_on:
+      postgres-app:
+        condition: service_healthy
+
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+      DB_HOST:  supply-mind-db
+      DB_PORT: ${POSTGRES_PORT:-5432}
+      DB_NAME: ${DB_NAME:?DB_NAME required}
+      DB_APP_USER: ${DB_APP_USER:?DB_APP_USER required}
+      DB_MIGRATOR_USER: ${DB_MIGRATOR_USER:?DB_MIGRATOR_USER required}
+      SUPPLYMIND_SECRETS_DIR: /run/secrets/
+      SERVER_ADDRESS: 0.0.0.0
+
+    secrets:
+      - source: db_migrator_password
+        target: db_migrator_password.txt
+      - source: db_app_password
+        target: db_app_password.txt
+
+    networks:
+      - app-network
+
+    ports:
+      - "127.0.0.1:${SERVER_PORT:-8080}:8080"
+
 volumes:
   postgres_data:
 
 networks:
-  supplymind-network:
+  app-network:
     driver: bridge
 
 secrets:

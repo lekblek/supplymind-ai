@@ -15,12 +15,10 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: false
     clean-disabled: true
-    placeholders:
-      appRole: ${DB_APP_USER:kuamoja_app}
-      migratorRole: ${DB_MIGRATOR_USER:kuamoja_migrator}
     schemas:
       - flyway
       - platform
+      - inventory
     default-schema: flyway
 
   jpa:
