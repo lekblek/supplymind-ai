@@ -54,3 +54,58 @@ See docs/PROJECT_STATE.md for progress.
 
 No license has been selected yet.
 All rights reserved.
+
+## Local development
+
+### Requirements
+
+- Java 25
+- Docker with Docker Compose
+- Git Bash (Windows)
+- Maven Wrapper included in the repository
+
+### Configuration
+
+Copy `.env.example` to `.env` and configure
+the local PostgreSQL credentials.
+
+### Run local CI
+
+```bash
+./scripts/ci-local.sh
+```
+
+### Build and deploy locally
+
+```bash
+./scripts/deploy-local.sh
+```
+
+### Check application
+
+```bash
+curl http://localhost:8081/actuator/health
+```
+
+### Inspect containers
+
+```bash
+docker compose ps
+docker compose logs -f backend
+```
+
+### Stop local services
+
+```bash
+docker compose down
+```
+
+Do not use `docker compose down -v`
+unless persistent database deletion is intentional.
+
+## Development milestones
+
+- Phase 00: Engineering foundation
+- Phase 01: Inventory and Orders
+- Phase 02: Procurement
+- Phase 03: Approval workflow

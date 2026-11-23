@@ -1,45 +1,56 @@
-﻿# SupplyMind AI - Project State
+﻿
+# SupplyMind AI — Project State
 
-## Project
+## Current status
 
-SupplyMind AI
-Standalone product in the Kuamoja ecosystem.
+Phase 00 — Engineering Foundation
 
-## Current phase
+Status: Final validation
 
-Phase 00 - Project Foundation
+## Implemented
 
-## Current task
+- Independent Git repository
+- Spring Boot application
+- Spring Modulith architecture foundation
+- PostgreSQL with Docker Compose
+- Flyway migration V001
+- Initial inventory schema
+- JUnit and Spring Boot tests
+- PostgreSQL integration tests with Testcontainers
+- Local CI script
+- Local Docker deployment
+- Git pre-push hook
 
-00.2 - Initialize repository conventions
-and architectural decision.
+## Architectural decisions
 
-## Architecture
-
-Modular Spring Boot application.
-
-Independent Python AI service planned.
-
-## Existing decisions
-
-- ADR-0001: Initial modular architecture
+- Standalone product in Kuamoja ecosystem
+- Modular monolith first
+- PostgreSQL for business persistence
+- Flyway owns SQL schema evolution
+- Independent Python AI service planned
+- No premature Kafka or microservices
 
 ## Validation
 
-Pending:
-- Confirm generated files
-- Validate Git staged changes
-- Create initial commit
+Local CI/CD and database integration reported
+as successful.
 
-## Next task
+Final Phase 00 verification pending completion
+of the release checks and Git milestone.
 
-00.3 - Bootstrap Spring Boot application.
+## Next phase
+
+Phase 01 — Inventory and Orders
+
+First step:
+01.1 — Inventory Domain Model
 
 ## Working rules
 
-- Build one functional increment at a time.
-- Execute tests before claiming success.
-- Preserve a clear Git history.
-- Never commit secrets.
-- Do not introduce premature infrastructure.
-- Keep SupplyMind independent from Kuamoja ERP.
+- Implement one validated increment at a time.
+- Preserve existing functionality.
+- Use automated tests for business rules.
+- Do not commit secrets.
+- Keep AI separate from sensitive business decisions.
+- Maintain a readable Git history.
+  EOF
